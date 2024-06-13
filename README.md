@@ -52,3 +52,6 @@ There is a main method in the script, you need to edit and provide your user and
 ```
 $ (venv) python tweetpost.py
 ```
+
+
+idea from https://github.com/ColombiaPython/social-media-automation

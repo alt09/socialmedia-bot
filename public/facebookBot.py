@@ -22,7 +22,7 @@ def get_latest_news():
     Function to fetch the latest news from a news website and return it as a string.
     """
     # Initialize WebDriver (ensure you have the correct driver executable path)
-    driver_path = "c:\Program Files\Google\Chrome\Application"  # Replace with the path to your WebDriver executable
+    driver_path = "c:\\Program Files\\Google\\Chrome\\Application"  # Replace with the path to your WebDriver executable
     driver = webdriver.Chrome(driver_path)
     
     try:

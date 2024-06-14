@@ -71,27 +71,27 @@ def main():
     # Login to Twitter
     driver.get("https://twitter.com")
     sleep(3)  # Wait for the page to load
-    elem = driver.find_element_by_name("session[username_or_email]")
+    elem = driver.find_element_by_name("session[username_or_email]")# TODO: research the current way to find this elements 
     elem.send_keys(usr)  # Enter the Twitter username
-    elem = driver.find_element_by_name("session[password]")
+    elem = driver.find_element_by_name("session[password]")# TODO: research the current way to find this elements 
     elem.send_keys(pwd)  # Enter the Twitter password
-    c = driver.find_element_by_class_name("EdgeButton")
+    c = driver.find_element_by_class_name("EdgeButton")# TODO: research the current way to find this elements 
     c.click()  # Click the login button
     sleep(3)  # Wait for the login process to complete
 
     # Enter the text to post on Twitter
-    mess = driver.find_element_by_id("tweet-box-home-timeline")
+    mess = driver.find_element_by_id("tweet-box-home-timeline") # TODO: research the current way to find this elements 
     mess.send_keys(message)  # Enter the fetched latest news
     sleep(5)  # Wait for the message to be entered
 
     # If an image path is provided, upload the image
     if image_path:
-        ima = driver.find_element_by_name("media_empty")
+        ima = driver.find_element_by_name("media_empty")# TODO: research the current way to find this elements 
         sleep(3)  # Wait before uploading the image
         ima.send_keys(image_path)  # Provide the image file path
 
     # Get the 'Post' button and click it
-    Post_button = driver.find_element_by_class_name("tweet-action")
+    Post_button = driver.find_element_by_class_name("tweet-action")# TODO: research the current way to find this elements 
     sleep(3)  # Wait before clicking the post button
     Post_button.click()  # Click the post button to publish the tweet
     sleep(3)  # Wait for the post to be made

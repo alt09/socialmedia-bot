@@ -70,11 +70,11 @@ def main():
     # Login to Facebook
     driver.get("http://www.facebook.com")
     sleep(3)
-    elem = driver.find_element_by_id("email")
+    elem = driver.find_element_by_id("email")# TODO: research the current way to find this elements 
     elem.send_keys(usr)  # Enter the Facebook username
-    elem = driver.find_element_by_id("pass")
+    elem = driver.find_element_by_id("pass")# TODO: research the current way to find this elements 
     elem.send_keys(pwd)  # Enter the Facebook password
-    c = driver.find_element_by_id('loginbutton')
+    c = driver.find_element_by_id('loginbutton')# TODO: research the current way to find this elements 
     c.click()  # Click the login button
     sleep(3)
 
@@ -85,19 +85,19 @@ def main():
         sleep(5)  # Wait for the page to load
 
         # Find the post box and enter the message
-        post_box = driver.find_element_by_xpath("//*[@name='xhpc_message_text']")
+        post_box = driver.find_element_by_xpath("//*[@name='xhpc_message_text']")# TODO: research the current way to find this elements 
         post_box.send_keys(message)
         sleep(5)  # Wait for the message to be entered
 
         # If an image path is provided, upload the image
         if image_path != "":
-            addMedia = driver.find_element_by_xpath("//*[@data-testid='media-attachment-selector']")
+            addMedia = driver.find_element_by_xpath("//*[@data-testid='media-attachment-selector']")# TODO: research the current way to find this elements 
             addMedia.click()
             # Provide the image file path
-            driver.find_element_by_xpath("//*[@name='composer_photo']").send_keys(image_path)
+            driver.find_element_by_xpath("//*[@name='composer_photo']").send_keys(image_path)# TODO: research the current way to find this elements 
 
         # Find the 'Post' button and click it
-        Post_button = driver.find_element_by_xpath("//*[@data-testid='react-composer-post-button']")
+        Post_button = driver.find_element_by_xpath("//*[@data-testid='react-composer-post-button']")# TODO: research the current way to find this elements 
         sleep(5)  # Wait before clicking the post button
         Post_button.click()
         sleep(5)  # Wait for the post to be made

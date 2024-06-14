@@ -27,7 +27,7 @@ def get_latest_news():
     
     try:
         # Open the news website
-        news_url = "https://miroradio.com/"  # Replace with the news website URL (in case you don't use this one 
+        news_url = "https://miroradio.com/"  # Replace with the news website URL
         driver.get(news_url)
         
         # Wait for the news element to be visible
@@ -40,21 +40,21 @@ def get_latest_news():
     finally:
         # Close the WebDriver
         driver.quit()
-    print(latest_news)
     return latest_news
-print(get_latest_news)
-
 
 def main():
+    """
+    Main function to load Facebook credentials, fetch latest news, and post it on multiple Facebook groups.
+    """
     # Load Facebook information from 'facebook.txt' into environment variables
     load_facebook_info()
 
     # Get information from environment variables
-    usr = os.getenv("USER")  # Retrieve username
-    pwd = os.getenv("PASSWORD")  # Retrieve password
-    message = get_latest_news()# Placeholder: Enter the message you want to post here
-    image_path = os.getenv("IMAGE_PATH")  # Retrieve image path
-    group_links = os.getenv("GROUP_LINKS").split()  # Retrieve group links as a list
+    usr = os.getenv("USER")  # Retrieve Facebook username
+    pwd = os.getenv("PASSWORD")  # Retrieve Facebook password
+    message = get_latest_news()  # Fetch the latest news to post
+    image_path = os.getenv("IMAGE_PATH")  # Retrieve path to the image to be posted
+    group_links = os.getenv("GROUP_LINKS").split()  # Retrieve Facebook group links as a list
 
     # Delete cache by setting preferences for the Firefox profile
     profile = webdriver.FirefoxProfile()
@@ -63,7 +63,7 @@ def main():
     profile.set_preference("browser.cache.offline.enable", False)
     profile.set_preference("network.http.use-cache", False)
 
-    # Path to geckodriver executable
+    # Initialize Firefox WebDriver with custom profile (ensure you have the correct driver executable path)
     driver = webdriver.Firefox(executable_path=r'D:\Desktop\selenium\geckodriver', firefox_profile=profile)
     driver.implicitly_wait(15)  # Set an implicit wait of 15 seconds
 
@@ -71,16 +71,16 @@ def main():
     driver.get("http://www.facebook.com")
     sleep(3)
     elem = driver.find_element_by_id("email")
-    elem.send_keys(usr)  # Enter the user email
+    elem.send_keys(usr)  # Enter the Facebook username
     elem = driver.find_element_by_id("pass")
-    elem.send_keys(pwd)  # Enter the user password
+    elem.send_keys(pwd)  # Enter the Facebook password
     c = driver.find_element_by_id('loginbutton')
     c.click()  # Click the login button
     sleep(3)
 
-    # Loop through each group link to post the message and image
+    # Loop through each Facebook group link to post the message and image
     for group in group_links:
-        # Go to the Facebook group
+        # Navigate to the Facebook group
         driver.get(group)
         sleep(5)  # Wait for the page to load
 
@@ -93,7 +93,7 @@ def main():
         if image_path != "":
             addMedia = driver.find_element_by_xpath("//*[@data-testid='media-attachment-selector']")
             addMedia.click()
-            # Provide the picture file path
+            # Provide the image file path
             driver.find_element_by_xpath("//*[@name='composer_photo']").send_keys(image_path)
 
         # Find the 'Post' button and click it

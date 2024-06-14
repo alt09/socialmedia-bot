@@ -5,10 +5,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
 
-
 def load_twitter_info():
     """
-    Function to load twitter information from the 'twitter.txt' file and set them as environment variables.
+    Function to load Twitter information from the 'twitter.txt' file and set them as environment variables.
     """
     with open("twitter.txt", "r") as file:
         # Read each line from the file
@@ -23,7 +22,7 @@ def get_latest_news():
     Function to fetch the latest news from a news website and return it as a string.
     """
     # Initialize WebDriver (ensure you have the correct driver executable path)
-    driver_path = "c:\Program Files\Google\Chrome\Application"  # Replace with the path to your WebDriver executable
+    driver_path = "c:\\Program Files\\Google\\Chrome\\Application"  # Replace with the path to your WebDriver executable
     driver = webdriver.Chrome(driver_path)
     
     try:
@@ -41,53 +40,64 @@ def get_latest_news():
     finally:
         # Close the WebDriver
         driver.quit()
+    
+    # Return the latest news
     return latest_news
 
 def main():
-    
-    # Load twitter information from 'twitter.txt' into environment variables
+    """
+    Main function to load Twitter credentials, fetch latest news, and post it on Twitter.
+    """
+    # Load Twitter information from 'twitter.txt' into environment variables
     load_twitter_info()
 
     # Get information from environment variables
-    usr = os.getenv("USER")  # Retrieve twitter username
-    pwd = os.getenv("PASSWORD")  # Retrieve twitter password
+    usr = os.getenv("USER")  # Retrieve Twitter username
+    pwd = os.getenv("PASSWORD")  # Retrieve Twitter password
     message = get_latest_news()  # Fetch the latest news to post
     image_path = os.getenv("IMAGE_PATH")  # Retrieve path to the image to be posted
     
-	# Delete cache by setting preferences for the Firefox profile
+    # Delete cache by setting preferences for the Firefox profile
     profile = webdriver.FirefoxProfile()
     profile.set_preference("browser.cache.disk.enable", False)
     profile.set_preference("browser.cache.memory.enable", False)
     profile.set_preference("browser.cache.offline.enable", False)
     profile.set_preference("network.http.use-cache", False)
 
-	# Path to geckodriver executable
+    # Initialize Firefox WebDriver with custom profile (ensure you have the correct driver executable path)
     driver = webdriver.Firefox(executable_path=r'D:\Desktop\selenium\geckodriver')
-    driver.implicitly_wait(15) # Set an implicit wait of 15 seconds
+    driver.implicitly_wait(15)  # Set an implicit wait of 15 seconds
 
-	# Login to twitter
+    # Login to Twitter
     driver.get("https://twitter.com")
-    sleep(3)
+    sleep(3)  # Wait for the page to load
     elem = driver.find_element_by_name("session[username_or_email]")
-    elem.send_keys(usr)# Enter the user email
+    elem.send_keys(usr)  # Enter the Twitter username
     elem = driver.find_element_by_name("session[password]")
-    elem.send_keys(pwd)# Enter the user password
+    elem.send_keys(pwd)  # Enter the Twitter password
     c = driver.find_element_by_class_name("EdgeButton")
-    c.click()# Click the login button
-    sleep(3)
-	# Enter the text we want to post to twitter and the image 
+    c.click()  # Click the login button
+    sleep(3)  # Wait for the login process to complete
+
+    # Enter the text to post on Twitter
     mess = driver.find_element_by_id("tweet-box-home-timeline")
-    mess.send_keys(message)
-    sleep(5)
-    ima = driver.find_element_by_name("media_empty")
-    sleep(3)
-    ima.send_keys(image_path)
-    # Get the 'Post' button and click on it
+    mess.send_keys(message)  # Enter the fetched latest news
+    sleep(5)  # Wait for the message to be entered
+
+    # If an image path is provided, upload the image
+    if image_path:
+        ima = driver.find_element_by_name("media_empty")
+        sleep(3)  # Wait before uploading the image
+        ima.send_keys(image_path)  # Provide the image file path
+
+    # Get the 'Post' button and click it
     Post_button = driver.find_element_by_class_name("tweet-action")
-    sleep(3)
-    Post_button.click()
-    sleep(3)
+    sleep(3)  # Wait before clicking the post button
+    Post_button.click()  # Click the post button to publish the tweet
+    sleep(3)  # Wait for the post to be made
+
+    # Close the browser window
     driver.close()
 
 if __name__ == '__main__':
-  main()
+    main()

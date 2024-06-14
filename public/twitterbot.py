@@ -49,11 +49,11 @@ def main():
     load_twitter_info()
 
     # Get information from environment variables
-    usr = os.getenv("USER")  # Retrieve username
-    pwd = os.getenv("PASSWORD")  # Retrieve password
-    message = ""  # Placeholder: Enter the message you want to post here
-    image_path = os.getenv("IMAGE_PATH")  # Retrieve image path
-	
+    usr = os.getenv("USER")  # Retrieve twitter username
+    pwd = os.getenv("PASSWORD")  # Retrieve twitter password
+    message = get_latest_news()  # Fetch the latest news to post
+    image_path = os.getenv("IMAGE_PATH")  # Retrieve path to the image to be posted
+    
 	# Delete cache by setting preferences for the Firefox profile
     profile = webdriver.FirefoxProfile()
     profile.set_preference("browser.cache.disk.enable", False)

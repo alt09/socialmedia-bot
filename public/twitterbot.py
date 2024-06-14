@@ -69,7 +69,7 @@ def main():
     driver.implicitly_wait(15)  # Set an implicit wait of 15 seconds
 
     # Login to Twitter
-    driver.get("https://twitter.com")
+    driver.get("https://twitter.com") # https://x.com/home maybe is these one idk 
     sleep(3)  # Wait for the page to load
     elem = driver.find_element_by_name("session[username_or_email]")# TODO: research the current way to find this elements 
     elem.send_keys(usr)  # Enter the Twitter username

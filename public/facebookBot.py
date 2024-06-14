@@ -1,8 +1,8 @@
 from time import sleep
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import os
 
 def load_facebook_info():
@@ -17,6 +17,34 @@ def load_facebook_info():
             # Set environment variable with key as variable name and value as its value
             os.environ[key] = value
 
+def get_latest_news():
+    """
+    Function to fetch the latest news from a news website and return it as a string.
+    """
+    # Initialize WebDriver (ensure you have the correct driver executable path)
+    driver_path = "c:\Program Files\Google\Chrome\Application"  # Replace with the path to your WebDriver executable
+    driver = webdriver.Chrome(driver_path)
+    
+    try:
+        # Open the news website
+        news_url = "https://miroradio.com/"  # Replace with the news website URL (in case you don't use this one 
+        driver.get(news_url)
+        
+        # Wait for the news element to be visible
+        wait = WebDriverWait(driver, 10)
+        news_element = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "css-selector-of-news-element")))  # Replace with the actual CSS selector of the news element
+        
+        # Extract the text from the news element
+        latest_news = news_element.text
+        
+    finally:
+        # Close the WebDriver
+        driver.quit()
+    print(latest_news)
+    return latest_news
+print(get_latest_news)
+
+
 def main():
     # Load Facebook information from 'facebook.txt' into environment variables
     load_facebook_info()
@@ -24,7 +52,7 @@ def main():
     # Get information from environment variables
     usr = os.getenv("USER")  # Retrieve username
     pwd = os.getenv("PASSWORD")  # Retrieve password
-    message = ""  # Placeholder: Enter the message you want to post here
+    message = get_latest_news()# Placeholder: Enter the message you want to post here
     image_path = os.getenv("IMAGE_PATH")  # Retrieve image path
     group_links = os.getenv("GROUP_LINKS").split()  # Retrieve group links as a list
 

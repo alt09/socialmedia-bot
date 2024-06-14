@@ -1,1 +1,4 @@
-adss
+USER=miroradio
+PASSWORD=alkwbdalbwae
+IMAGE_PATH=blablabla
+GROUP_LINKS=group1 group2 group3

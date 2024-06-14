@@ -1,9 +1,10 @@
 from time import sleep
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import os
+
 
 def load_twitter_info():
     """
@@ -16,6 +17,31 @@ def load_twitter_info():
             key, value = line.strip().split("=")
             # Set environment variable with key as variable name and value as its value
             os.environ[key] = value
+
+def get_latest_news():
+    """
+    Function to fetch the latest news from a news website and return it as a string.
+    """
+    # Initialize WebDriver (ensure you have the correct driver executable path)
+    driver_path = "c:\Program Files\Google\Chrome\Application"  # Replace with the path to your WebDriver executable
+    driver = webdriver.Chrome(driver_path)
+    
+    try:
+        # Open the news website
+        news_url = "https://miroradio.com/"  # Replace with the news website URL
+        driver.get(news_url)
+        
+        # Wait for the news element to be visible
+        wait = WebDriverWait(driver, 10)
+        news_element = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "css-selector-of-news-element")))  # Replace with the actual CSS selector of the news element
+        
+        # Extract the text from the news element
+        latest_news = news_element.text
+        
+    finally:
+        # Close the WebDriver
+        driver.quit()
+    return latest_news
 
 def main():
     

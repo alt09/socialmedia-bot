@@ -3,13 +3,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 import os
 
 def load_twitter_info():
     """
     Function to load Twitter information from the 'twitter.txt' file and set them as environment variables.
     """
-    with open("twitter.txt", "r") as file:
+    twitter_info_path = r"path"#path of the chrome 
+    with open(twitter_info_path, "r") as file:
         # Read each line from the file
         for line in file:
             # Split each line into key-value pair based on '=' separator
@@ -21,9 +23,8 @@ def get_latest_news():
     """
     Function to fetch the latest news from a news website and return it as a string.
     """
-    # Initialize WebDriver (ensure you have the correct driver executable path)
-    driver_path = os.getenv("CHROME_DRIVER_PATH", "path_to_your_chrome_driver")  # Fetching driver path from environment variable
-    driver = webdriver.Chrome(executable_path=driver_path)
+
+    driver = webdriver.Chrome()
     
     try:
         # Open the news website
@@ -31,11 +32,11 @@ def get_latest_news():
         driver.get(news_url)
         
         # Wait for the news element to be visible
-        wait = WebDriverWait(driver, 10)
-        news_element = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "css-selector-of-news-element")))  # Replace with the actual CSS selector of the news element
+       # wait = WebDriverWait(driver, 10)
+        news_element = "wow"# wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "https://miroradio.com/wp-content/plugins/ansar-import/public/css/ansar-import-public.css?ver=1.0.16")))  # Replace with the actual CSS selector of the news element
         
         # Extract the text from the news element
-        latest_news = news_element.text
+        latest_news = news_element#.text
         
     finally:
         # Close the WebDriver
@@ -57,11 +58,11 @@ def main():
     message = get_latest_news()  # Fetch the latest news to post
     image_path = os.getenv("IMAGE_PATH")  # Retrieve path to the image to be posted
     
-    driver_path = os.getenv("CHROME_DRIVER_PATH", "path_to_your_chrome_driver")  # Fetching driver path from environment variable
+    driver_path = ChromeDriverManager().install()  # Automatically manage the ChromeDriver
 
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-cache")
-    driver = webdriver.Chrome(executable_path=driver_path, options=options)
+    driver = webdriver.Chrome(driver_path, options=options)
     driver.implicitly_wait(15)
 
     try:

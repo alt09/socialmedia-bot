@@ -10,7 +10,7 @@ def load_twitter_info():
     """
     Function to load Twitter information from the 'twitter.txt' file and set them as environment variables.
     """
-    twitter_info_path = r"path"#path of the chrome 
+    twitter_info_path = r"C:\Users\Andres  Lara-trevino\programacion\projectos\python\socialmedia-bot\private\twitter.txt"#path of the file where you store your password and user 
     with open(twitter_info_path, "r") as file:
         # Read each line from the file
         for line in file:
@@ -27,16 +27,16 @@ def get_latest_news():
     driver = webdriver.Chrome()
     
     try:
-        # Open the news website
-        news_url = "https://miroradio.com/"  # Replace with the news website URL
-        driver.get(news_url)
+       # #Open the news website
+       # news_url = "https://miroradio.com/"  # Replace with the news website URL
+       # driver.get(news_url)
         
         # Wait for the news element to be visible
-       # wait = WebDriverWait(driver, 10)
-        news_element = "wow"# wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "https://miroradio.com/wp-content/plugins/ansar-import/public/css/ansar-import-public.css?ver=1.0.16")))  # Replace with the actual CSS selector of the news element
+        #wait = WebDriverWait(driver, 10)
+        news_element = "yolo"  #wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "https://miroradio.com/wp-content/plugins/ansar-import/public/css/ansar-import-public.css?ver=1.0.16")))  # Replace with the actual CSS selector of the news element
         
         # Extract the text from the news element
-        latest_news = news_element#.text
+        latest_news = news_element
         
     finally:
         # Close the WebDriver
@@ -58,11 +58,8 @@ def main():
     message = get_latest_news()  # Fetch the latest news to post
     image_path = os.getenv("IMAGE_PATH")  # Retrieve path to the image to be posted
     
-    driver_path = ChromeDriverManager().install()  # Automatically manage the ChromeDriver
-
-    options = webdriver.ChromeOptions()
-    options.add_argument("--disable-cache")
-    driver = webdriver.Chrome(driver_path, options=options)
+    Options = webdriver.ChromeOptions().add_argument('--disable-cache')
+    driver = webdriver.Chrome(options=Options)
     driver.implicitly_wait(15)
 
     try:

@@ -22,8 +22,8 @@ def get_latest_news():
     Function to fetch the latest news from a news website and return it as a string.
     """
     # Initialize WebDriver (ensure you have the correct driver executable path)
-    driver_path = "c:\\Program Files\\Google\\Chrome\\Application"  # Replace with the path to your WebDriver executable
-    driver = webdriver.Chrome(driver_path)
+    driver_path = os.getenv("CHROME_DRIVER_PATH", "path_to_your_chrome_driver")  # Fetching driver path from environment variable
+    driver = webdriver.Chrome(executable_path=driver_path)
     
     try:
         # Open the news website
@@ -57,47 +57,43 @@ def main():
     message = get_latest_news()  # Fetch the latest news to post
     image_path = os.getenv("IMAGE_PATH")  # Retrieve path to the image to be posted
     
-    # Delete cache by setting preferences for the Firefox profile
-    profile = webdriver.FirefoxProfile()
-    profile.set_preference("browser.cache.disk.enable", False)
-    profile.set_preference("browser.cache.memory.enable", False)
-    profile.set_preference("browser.cache.offline.enable", False)
-    profile.set_preference("network.http.use-cache", False)
+    driver_path = os.getenv("CHROME_DRIVER_PATH", "path_to_your_chrome_driver")  # Fetching driver path from environment variable
 
-    # Initialize Firefox WebDriver with custom profile (ensure you have the correct driver executable path)
-    driver = webdriver.Firefox(executable_path=r'D:\Desktop\selenium\geckodriver')
-    driver.implicitly_wait(15)  # Set an implicit wait of 15 seconds
+    options = webdriver.ChromeOptions()
+    options.add_argument("--disable-cache")
+    driver = webdriver.Chrome(executable_path=driver_path, options=options)
+    driver.implicitly_wait(15)
 
-    # Login to Twitter
-    driver.get("https://twitter.com") # https://x.com/home maybe is these one idk 
-    sleep(3)  # Wait for the page to load
-    elem = driver.find_element_by_name("session[username_or_email]")# TODO: research the current way to find this elements 
-    elem.send_keys(usr)  # Enter the Twitter username
-    elem = driver.find_element_by_name("session[password]")# TODO: research the current way to find this elements 
-    elem.send_keys(pwd)  # Enter the Twitter password
-    c = driver.find_element_by_class_name("EdgeButton")# TODO: research the current way to find this elements 
-    c.click()  # Click the login button
-    sleep(3)  # Wait for the login process to complete
-
-    # Enter the text to post on Twitter
-    mess = driver.find_element_by_id("tweet-box-home-timeline") # TODO: research the current way to find this elements 
-    mess.send_keys(message)  # Enter the fetched latest news
-    sleep(5)  # Wait for the message to be entered
-
-    # If an image path is provided, upload the image
-    if image_path:
-        ima = driver.find_element_by_name("media_empty")# TODO: research the current way to find this elements 
-        sleep(3)  # Wait before uploading the image
-        ima.send_keys(image_path)  # Provide the image file path
-
-    # Get the 'Post' button and click it
-    Post_button = driver.find_element_by_class_name("tweet-action")# TODO: research the current way to find this elements 
-    sleep(3)  # Wait before clicking the post button
-    Post_button.click()  # Click the post button to publish the tweet
-    sleep(3)  # Wait for the post to be made
-
-    # Close the browser window
-    driver.close()
+    try:
+        driver.get("https://twitter.com/login")
+        sleep(3)
+        
+        username_field = driver.find_element(By.NAME, "session[username_or_email]")
+        username_field.send_keys(usr)
+        
+        password_field = driver.find_element(By.NAME, "session[password]")
+        password_field.send_keys(pwd)
+        
+        login_button = driver.find_element(By.CSS_SELECTOR, "div[data-testid='LoginForm_Login_Button']")
+        login_button.click()
+        sleep(3)
+        
+        tweet_box = driver.find_element(By.CSS_SELECTOR, "div[aria-label='Tweet text']")
+        tweet_box.send_keys(message)
+        sleep(5)
+        
+        if image_path:
+            media_input = driver.find_element(By.CSS_SELECTOR, "input[type='file'][aria-label='Add photos or video']")
+            sleep(3)
+            media_input.send_keys(image_path)
+        
+        post_button = driver.find_element(By.CSS_SELECTOR, "div[data-testid='tweetButtonInline']")
+        sleep(3)
+        post_button.click()
+        sleep(3)
+    
+    finally:
+        driver.quit()
 
 if __name__ == '__main__':
     main()

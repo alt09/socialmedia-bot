@@ -29,7 +29,7 @@ $ (venv) pip install selenium
 ### all Together with tweepy
 
 ```
-$ (venv) python tweetpost.py
+$ python tweetpost.py
 ```
 
 im just trying new things 

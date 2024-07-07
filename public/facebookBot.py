@@ -23,24 +23,28 @@ def get_latest_news():
     """
     Function to fetch the latest news from a news website and return it as a string.
     """
-    # Initialize WebDriver (ensure you have the correct driver executable path)
-    driver = webdriver.Chrome()
-    
-    try:
+    # Configure Chrome options to disable notifications
+   # chrome_options = webdriver.ChromeOptions()
+    #prefs = {"profile.default_content_setting_values.notifications": 2}
+    #chrome_options.add_experimental_option("prefs", prefs)
+
+    # Initialize WebDriver with the configured options
+    #driver = webdriver.Chrome(options=chrome_options)
+    #try:
         ## Open the news website
         #news_url = "https://miroradio.com/"  # Replace with the news website URL
         #driver.get(news_url)
         
         ## Wait for the news element to be visible
         #wait = WebDriverWait(driver, 10)
-        news_element = "im searching for a programming mentor for the frc team 6413"#wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "css-selector-of-news-element")))  # Replace with the actual CSS selector of the news element
+    news_element = "im searching for a programming mentor for the frc team 6413"#wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "css-selector-of-news-element")))  # Replace with the actual CSS selector of the news element
         
         # Extract the text from the news element
-        latest_news = news_element
+    latest_news = news_element
         
-    finally:
+    #finally:
         # Close the WebDriver
-        driver.quit()
+     #   driver.quit()
     return latest_news
 
 def main():
@@ -53,25 +57,31 @@ def main():
     # Get information from environment variables
     usr = os.getenv("USER")  # Retrieve Facebook username
     pwd = os.getenv("PASSWORD")  # Retrieve Facebook password
-    message = get_latest_news()  # Fetch the latest news to post
+    message = "im searching for a programming mentor for the frc team 6413"#wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "css-selector-of-news-element")))  # Replace with the actual CSS selector of the news element
+#get_latest_news()  # Fetch the latest news to post
     image_path = os.getenv("IMAGE_PATH")  # Retrieve path to the image to be posted
     group_links = os.getenv("GROUP_LINKS").split()  # Retrieve Facebook group links as a list
 
-    Options = webdriver.ChromeOptions().add_argument('--disable-cache')
-    driver = webdriver.Chrome(options=Options)
-    driver.implicitly_wait(15)
+    # Configure Chrome options to disable notifications
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {"profile.default_content_setting_values.notifications": 2}
+    chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_argument('--disable-cache')
+
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.implicitly_wait(1)
     
     try:
          # Login to Facebook
         driver.get("https://www.facebook.com/login/")
-        sleep(7)
-        username_field = driver.find_element(By.CSS_SELECTOR, "")
+        sleep(1)
+        username_field = driver.find_element(By.CSS_SELECTOR, "#email")
         username_field.send_keys(usr)
 
-        password_field = driver.find_element(By.CSS_SELECTOR, "")
+        password_field = driver.find_element(By.CSS_SELECTOR, "#pass")
         password_field.send_keys(pwd)
         
-        login_button = driver.find_element(By.CSS_SELECTOR, "")
+        login_button = driver.find_element(By.CSS_SELECTOR, "#loginbutton")
         login_button.click()
         sleep(3)
 
@@ -79,28 +89,25 @@ def main():
         for group in group_links:
             # Navigate to the Facebook group
             driver.get(group)
-            sleep(5)  # Wait for the page to load
-
+            sleep(3)  # Wait for the page to load
             # Find the post box and enter the message
-            post_box = driver.find_element(By.CSS_SELECTOR, "")
-            post_box.send_keys(message)
-            sleep(5)  # Wait for the message to be entered
+            post_button = driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div[2]/div/div/div/div[3]/div/div[2]/div/div/div/div[2]/div[2]')            
+            post_button.click()
+            sleep(3)  # Wait for the message to be entered
 
+            message_box = driver.find_element(By.XPATH,"/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[2]/div[1]/div[1]/div[1]/div/div/div[1]/p")
+            message_box.send_keys(message)
             # If an image path is provided, upload the image
             if image_path != "":
-                addMedia = driver.find_element(By.CSS_SELECTOR, "")
-                addMedia.click()
-                # Provide the image file path
-                driver.find_element(By.CSS_SELECTOR, "").send_keys(image_path)
+                addMedia = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[2]/div[1]/div[2]/div/div[1]/div/div/div/div[1]/div/div/div")
+                addMedia.send_keys(image_path)
 
             # Find the 'Post' button and click it
-            Post_button = driver.find_element(By.CSS_SELECTOR, "")
-            sleep(5)  # Wait before clicking the post button
+            Post_button = driver.find_element(By.XPATH, "/html/body/div[1]/div/div[1]/div/div[4]/div/div/div[1]/div/div[2]/div/div/div/form/div/div[1]/div/div/div/div[3]/div[2]/div/div")
             Post_button.click()
-            sleep(5)  # Wait for the post to be made
+            sleep(10)  # Wait for the post to be made
     finally:
     # Close the browser window
-        driver.close()
-
+        sleep(3)
 if __name__ == '__main__':
     main()

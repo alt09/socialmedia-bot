@@ -23,12 +23,14 @@ $ (venv) pip install selenium
 ```
 
 ### Twitter script
-* the same above steps until step 8
-* Download put in line 23 the path to this and put in line 22 the path to this. Configure the script and enjoy!  
-There is a main method in the script, you need to edit and provide your user and password, the path to the image
-* Run the script  
+* the same above steps
+
+  
+### all Together with tweepy
+
 ```
 $ (venv) python tweetpost.py
 ```
+
 im just trying new things 
 idea from https://github.com/ColombiaPython/social-media-automation
